@@ -5,28 +5,37 @@ const TeacherController = require("./app/controllers/TeacherController");
 const studentValidator = require("./app/validators/StudentValidator");
 const teacherValidator = require("./app/validators/TeacherValidator");
 
-router
-  .route("/alumnos")
-  .get(StudentController.getAllStudents)
-  .post(studentValidator.check, StudentController.saveStudent)
-  .all(StudentController.unssuportedMethod);
+const methodNotAllowed = (_req, res, _next) => {
+  res.status(405).json({ message: "unsupported method" });
+};
 
-router
-  .route("alumnos/:id")
-  .get(StudentController.getStudent)
-  .delete(StudentController.deleteStudent)
-  .put(studentValidator.check, StudentController.updateStudent);
+router.get("/alumnos", StudentController.getAllStudents);
+router.post("/alumnos", studentValidator.check, StudentController.saveStudent);
 
-router
-  .route("/profesores")
-  .get(TeacherController.getAllTeachers)
-  .post(teacherValidator.check, TeacherController.saveTeacher)
-  .all(TeacherController.unssuportedMethod);
+router.get("/alumnos/:id", StudentController.getStudent);
+router.delete("/alumnos/:id", StudentController.deleteStudent);
+router.put(
+  "/alumnos/:id",
+  studentValidator.check,
+  StudentController.updateStudent
+);
 
-router
-  .route("/profesores/:id")
-  .get(TeacherController.getTeacher)
-  .delete(TeacherController.deleteTeacher)
-  .put(teacherValidator.check, TeacherController.updateTeacher);
+router.get("/profesores", TeacherController.getAllTeachers);
+router.post(
+  "/profesores",
+  teacherValidator.check,
+  TeacherController.saveTeacher
+);
+
+router.get("/profesores/:id", TeacherController.getTeacher);
+router.delete("/profesores/:id", TeacherController.deleteTeacher);
+router.put(
+  "/profesores/:id",
+  teacherValidator.check,
+  TeacherController.updateTeacher
+);
+
+router.all("/profesores", methodNotAllowed);
+router.all("/alumnos", methodNotAllowed);
 
 module.exports = router;
