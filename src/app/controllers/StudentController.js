@@ -24,12 +24,16 @@ class StudentController {
   }
 
   async updateStudent(req, res) {
-    const { alumnoId } = req.params;
-    const { id, nombres, apellidos, matricula, promedio } = req.body;
-    const updatedStudentData = { id, nombres, apellidos, matricula, promedio };
-    const studentIndex = data.students.findIndex(
-      (student) => student.id == alumnoId
-    );
+    const { id } = req.params;
+    const { nombres, apellidos, matricula, promedio } = req.body;
+    const updatedStudentData = {
+      id,
+      nombres,
+      apellidos,
+      matricula,
+      promedio,
+    };
+    const studentIndex = data.students.findIndex((student) => student.id == id);
     if (studentIndex === -1) {
       return res.status(404).json({ message: "Student doesn't exists" });
     }
@@ -48,10 +52,6 @@ class StudentController {
     );
     data.students = filteredStudents;
     return res.status(200).json({ message: "Student deleted" });
-  }
-
-  async unssuportedMethod(_req, res, _next) {
-    return res.status(405).json({ message: "unsupported method" });
   }
 }
 

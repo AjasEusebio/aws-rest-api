@@ -24,8 +24,8 @@ class TeacherController {
   }
 
   async updateTeacher(req, res) {
-    const { teacherId } = req.params;
-    const { id, numeroEmpleado, nombres, apellidos, horasClase } = req.body;
+    const { id } = req.params;
+    const { numeroEmpleado, nombres, apellidos, horasClase } = req.body;
     const updatedTeacherData = {
       id,
       numeroEmpleado,
@@ -33,9 +33,7 @@ class TeacherController {
       apellidos,
       horasClase,
     };
-    const teacherIndex = data.teachers.findIndex(
-      (teacher) => teacher.id == teacherId
-    );
+    const teacherIndex = data.teachers.findIndex((teacher) => teacher.id == id);
     if (teacherIndex === -1) {
       return res.status(404).json({ message: "Teacher doesn't exists" });
     }
@@ -54,10 +52,6 @@ class TeacherController {
     );
     data.teachers = filteredTeachers;
     return res.status(200).json({ message: "Deleted teacher" });
-  }
-
-  async unssuportedMethod(_req, res, _next) {
-    return res.status(405).json({ message: "unsupported method" });
   }
 }
 
