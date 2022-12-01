@@ -1,16 +1,11 @@
 const router = require("express").Router();
-const httpStatus = require("./app/utils/httpStatusCodes");
 
 const StudentController = require("./app/controllers/StudentController");
 const TeacherController = require("./app/controllers/TeacherController");
 const studentValidator = require("./app/validators/StudentValidator");
 const teacherValidator = require("./app/validators/TeacherValidator");
 
-const methodNotAllowed = (_req, res, _next) => {
-  res
-    .status(httpStatus.METHOD_NOT_ALLOWED)
-    .json({ message: "Unsupported method" });
-};
+const Commons = require("./app/controllers/Commons");
 
 router.get("/alumnos", StudentController.getAllStudents);
 router.post("/alumnos", studentValidator.check, StudentController.saveStudent);
@@ -38,7 +33,7 @@ router.put(
   TeacherController.updateTeacher
 );
 
-router.all("/profesores", methodNotAllowed);
-router.all("/alumnos", methodNotAllowed);
+router.all("/profesores", Commons.methodNotAllowed);
+router.all("/alumnos", Commons.methodNotAllowed);
 
 module.exports = router;
