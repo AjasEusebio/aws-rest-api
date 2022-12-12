@@ -4,7 +4,6 @@ const httpStatus = require("../utils/httpStatusCodes");
 class StudentValidator {
   check(req, res, next) {
     const schema = Joi.object({
-      id: Joi.number().integer().positive().required(),
       nombres: Joi.string().trim().required(),
       apellidos: Joi.string().trim().required(),
       matricula: Joi.string().trim().required(),
