@@ -22,6 +22,9 @@ module.exports = {
       promedio: {
         type: Sequelize.DOUBLE,
       },
+      fotoPerfilUrl: {
+        type: Sequelize.STRING,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

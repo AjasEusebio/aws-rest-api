@@ -16,6 +16,9 @@ class Student extends Model {
 
         type: DataTypes.DOUBLE,
       },
+      fotoPerfilUrl: {
+        type: DataTypes.STRING,
+      },
     }, {
       sequelize, tableName: 'Students'
     })

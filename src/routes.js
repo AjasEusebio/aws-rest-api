@@ -12,6 +12,7 @@ router.post("/alumnos", studentValidator.check, StudentController.saveStudent);
 
 router.get("/alumnos/:id", StudentController.getStudent);
 router.delete("/alumnos/:id", StudentController.deleteStudent);
+router.post("/alumnos/:id/fotoPerfil", StudentController.uploadFotoPerfil);
 router.put(
   "/alumnos/:id",
   studentValidator.check,
