@@ -1,5 +1,8 @@
 const Student = require('../models/Student');
 const httpStatus = require("../utils/httpStatusCodes");
+const upload = require("../../config/awsS3");
+
+require('dotenv').config();
 
 class StudentController {
   async getAllStudents(_req, res) {
@@ -56,6 +59,28 @@ class StudentController {
     await foundedStudent.destroy();
     return res.status(httpStatus.OK).json({ message: "Student deleted" });
   }
+
+  async uploadFotoPerfil(req, res) {
+    const id = parseInt(req.params.id);
+    const foundedStudent = await Student.findByPk(id);
+    if (!foundedStudent) {
+      return res.status(httpStatus.NOT_FOUND).json({ message: "Student doesn't exist" });
+    }
+
+    upload.single('foto')(req, res, async function (err) {
+      if (err) {
+        return res.status(httpStatus.BAD_REQUEST)
+          .json({ message: "There was an error", error: err.message });
+      }
+
+      const updateValues = { fotoPerfilUrl: req.file.location };
+      await Student.update(updateValues, { where: { id } });
+      const studentfounded = await Student.findByPk(id);
+
+      return res.status(httpStatus.OK).json(studentfounded);
+    })
+  }
+
 }
 
 module.exports = new StudentController();
